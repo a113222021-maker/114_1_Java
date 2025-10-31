@@ -97,12 +97,12 @@ public class AccountTest {
         }
     }
     public static void deleteCustomer(List<Account> customers, String accountNumber) {
-        Account toDelete = customerInaction(customers, accountNumber);
-        if (toDelete != null) {
-            customers.remove(toDelete);
-            System.out.println("成功刪除帳戶: " + accountNumber);
-        } else {
-            System.out.println("找不到該帳戶號碼的客戶，無法刪除。");
+        for(int i=0;i<customers.size();i++){
+            if(customers.get(i).getAccountNumber().equals(accountNumber)){
+                customers.remove(i);
+                System.out.println("成功刪除帳戶: " + accountNumber);
+                return;
+            }
         }
     }
     public static void printCustomerInfo(Account account) {
