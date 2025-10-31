@@ -6,11 +6,11 @@ import java.util.Scanner;
 public class AccountTest {
     public static void main(String[] args) {
         List<Account> customers = new ArrayList<>(); // 儲存客戶帳戶的List
-        Account acc1 = new Account("A001", "Alice", 5000);
+        Account acc1 = new Account("A001", "Alice", 5000, "A123456789");
         addCustomer(customers, acc1);
-        Account acc2 = new Account("A002", "Bob", 3000);
+        Account acc2 = new Account("A002", "Bob", 3000, "B987654321");
         addCustomer(customers, acc2);
-        Account acc3 = new Account("A003", "Charlie", -100);
+        Account acc3 = new Account("A003", "Charlie", -100, "C135792468");
         addCustomer(customers,  acc3);
 
         operation(customers);
@@ -33,10 +33,12 @@ public class AccountTest {
                     String accNum = scanner.nextLine();
                     System.out.print("輸入持有人名稱: ");
                     String ownerName = scanner.nextLine();
+                    System.out.print("輸入持有人身分證字號: ");
+                    String ownerId = scanner.nextLine();
                     System.out.print("輸入初始餘額: ");
                     double initialBalance = scanner.nextDouble();
                     scanner.nextLine();
-                    Account newAccount = new Account(accNum, ownerName, initialBalance);
+                    Account newAccount = new Account(accNum, ownerName, initialBalance, ownerId);
                     addCustomer(customers, newAccount);
                     break;
                 case 2:

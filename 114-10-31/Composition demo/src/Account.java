@@ -6,6 +6,8 @@ public class Account {
 
     // 帳戶號碼，唯一識別每個帳戶
     private String accountNumber;
+    // 帳戶擁有者
+    private Person owner;
     // 帳戶擁有者名稱
     private String ownerName;
     // 帳戶餘額
@@ -13,15 +15,17 @@ public class Account {
     private Date openingDate;
     private Time2 openingTime;
 
+
     /**
      * 建構子，初始化帳戶號碼與初始餘額
      * @param accountNumber 帳戶號碼
      * @param initialBalance 初始餘額
      */
-    public Account(String accountNumber, String ownerName, double initialBalance) {
+    public Account(String accountNumber, String ownerName, double initialBalance,String ownerid) {
         LocalDateTime now = LocalDateTime.now(); // 取得目前日期與時間
         this.setAccountNumber(accountNumber);
         this.ownerName = ownerName;
+        this.owner = new Person(ownerName,ownerid);
         try {
             this.setBalance(initialBalance);
         } catch (IllegalArgumentException e) {
@@ -34,12 +38,9 @@ public class Account {
         this.openingTime = new Time2(now.getHour(), now.getMinute(), now.getSecond());
     }
 
-    public Account(String accountNumber, double initialBalance) {
-        this(accountNumber, "未知", initialBalance);
-    }
-
-    public Account() {
-        this("未知", "未知", 0);
+    // 新增三參數建構子（包含 ownerName，但不提供 ownerId，使用預設 ownerId）
+    public Account(String accountNumber, String ownerName, double initialBalance) {
+        this(accountNumber, ownerName, initialBalance, "未知ID");
     }
 
     public Account(String accountNumber) {
@@ -71,6 +72,22 @@ public class Account {
     }
 
     /**
+     * 取得 Person 物件
+     * @return 帳戶擁有者的 Person 物件
+     */
+    public Person getOwner() {
+        return owner;
+    }
+
+    /**
+     * 取得 owner id
+     * @return 帳戶擁有者的身分證編號
+     */
+    public String getOwnerId() {
+        return owner != null ? owner.getId() : null;
+    }
+
+    /**
      * 設定帳戶餘額
      * @param balance 欲設定的帳戶餘額，必須為正數
      * @throws IllegalArgumentException 若餘額非正數則拋出例外
@@ -89,6 +106,16 @@ public class Account {
      */
     public void setAccountNumber(String accountNumber) {
         this.accountNumber = accountNumber;
+    }
+
+    /**
+     * 設定 owner（姓名與身分證編號）
+     * @param name 姓名
+     * @param id 身分證編號
+     */
+    public void setOwner(String name, String id) {
+        this.ownerName = name;
+        this.owner = new Person(name, id);
     }
 
     /**
@@ -117,7 +144,8 @@ public class Account {
         }
     }
     public String toString() {
+        String ownerInfo = (owner != null) ? owner.toString() : ownerName;
         return String.format("帳戶號碼: %s, 持有人: %s, 餘額: %.2f, 開戶日期: %s, 開戶時間: %s",
-                accountNumber, ownerName, balance, openingDate, openingTime);
+                accountNumber, ownerInfo, balance, openingDate, openingTime);
     }
 }
