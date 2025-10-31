@@ -1,3 +1,4 @@
+// 檔案路徑: c:\Users\m306\Desktop\114_1_Java\114-10-31\Composition demo\src\AccountTest.java
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -23,7 +24,7 @@ public class AccountTest {
         Account selectedAccount = null;
         while (true) {
             menu();
-            System.out.print("請選擇功能(1-5): ");
+            System.out.print("請選擇功能(1-7): ");
             int choice = scanner.nextInt();
             scanner.nextLine(); // 清除換行符號
             switch (choice) {
@@ -34,6 +35,7 @@ public class AccountTest {
                     String ownerName = scanner.nextLine();
                     System.out.print("輸入初始餘額: ");
                     double initialBalance = scanner.nextDouble();
+                    scanner.nextLine();
                     Account newAccount = new Account(accNum, ownerName, initialBalance);
                     addCustomer(customers, newAccount);
                     break;
@@ -42,6 +44,7 @@ public class AccountTest {
                     String searchAccNum = scanner.nextLine();
                     selectedAccount = customerInAction(customers, searchAccNum);
                     printCustomerInfo(selectedAccount);
+
                     break;
 
                 case 3:
@@ -53,7 +56,40 @@ public class AccountTest {
                     String deleteAccNum = scanner.nextLine();
                     deleteCustomer(customers, deleteAccNum);
                     break;
-                case 5:
+
+                case 5: // 存款
+                    System.out.print("輸入要存款的帳戶號碼: ");
+                    String depAccNum = scanner.nextLine();
+                    Account depAccount = customerInAction(customers, depAccNum);
+                    if (depAccount != null) {
+                        System.out.print("輸入存款金額: ");
+                        double depAmount = scanner.nextDouble();
+                        scanner.nextLine();
+                        try {
+                            depAccount.deposit(depAmount);
+                            System.out.println("存款成功，帳戶餘額: " + depAccount.getBalance());
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("存款失敗: " + e.getMessage());
+                        }
+                    }
+                    break;
+                case 6: // 提款
+                    System.out.print("輸入要提款的帳戶號碼: ");
+                    String witAccNum = scanner.nextLine();
+                    Account witAccount = customerInAction(customers, witAccNum);
+                    if (witAccount != null) {
+                        System.out.print("輸入提款金額: ");
+                        double witAmount = scanner.nextDouble();
+                        scanner.nextLine();
+                        try {
+                            witAccount.withdraw(witAmount);
+                            System.out.println("提款成功，帳戶餘額: " + witAccount.getBalance());
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("提款失敗: " + e.getMessage());
+                        }
+                    }
+                    break;
+                case 7:
                     System.out.println("離開系統，謝謝使用!");
                     return;
                 default:
@@ -99,9 +135,7 @@ public class AccountTest {
             System.out.println("無法列印帳戶資訊，帳戶不存在");
             return;
         }
-        System.out.println("帳戶號碼: " + account.getAccountNumber() +
-                ", 持有人: " + account.getOwnerName() +
-                ", 餘額: " + account.getBalance());
+       System.out.println(account.toString());
     }
 
     // 功能選單 (1) 新增客戶 (2) 列印指定客戶帳戶資訊 (3) 顯示所有客戶帳戶資訊 (4) 刪除客戶帳戶 (5) 離開
@@ -111,6 +145,8 @@ public class AccountTest {
             System.out.println("2. 列印指定客戶帳戶資訊");
             System.out.println("3. 顯示所有客戶帳戶資訊");
             System.out.println("4. 刪除客戶帳戶");
-            System.out.println("5. 離開");
+            System.out.println("5. 存款");
+            System.out.println("6. 提款");
+            System.out.println("7. 離開");
         }
 }
