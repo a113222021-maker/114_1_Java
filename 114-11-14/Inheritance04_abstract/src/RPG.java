@@ -6,30 +6,32 @@ public class RPG {
 
         Magician magician_light = new Magician("光明法師", 80, 15, 10);
         Magician magician_dark = new Magician("黑暗法師", 80, 20, 5);
-        Role[] gameRoles = {swordsMan_light, swordsMan_dark, magician_light, magician_dark,ShieldSwordsMan};
+
+        ShieldSwordsMan shieldSwordsMan = new ShieldSwordsMan("持盾劍士", 120, 18, 8);
+
+        Role[] gameRoles = {swordsMan_light, swordsMan_dark, magician_light, magician_dark, shieldSwordsMan};
 
         // 戰鬥過程
         System.out.println("戰鬥開始！");
         for (Role currentRole : gameRoles) {
             if (!currentRole.isAlive()) {
-                continue; // 跳過已經被擊敗的角色
+                continue; // 跳過已經死亡的角色
             }
-
-
             if (currentRole instanceof SwordsMan) {
-                Role target=(gameRoles[(int) (Math.random() * gameRoles.length)]);
-                if(target instanceof ShieldSwordsMan){
+                Role target = gameRoles[(int) (Math.random() * gameRoles.length)];
+                if (target instanceof ShieldSwordsMan)
                     ((ShieldSwordsMan) target).defence();
-                }
                 currentRole.attack(target);
-            } else if (currentRole instanceof Magician) {
-
+            }
+            else if (currentRole instanceof Magician) {
+                Magician magician = (Magician) currentRole;
                 if (Math.random() < 0.5) {
-                    // 50% 機率攻擊
-                    currentRole.attack(gameRoles[(int) (Math.random() * gameRoles.length)]);
+                    Role target = gameRoles[(int) (Math.random() * gameRoles.length)];
+                    if (target instanceof ShieldSwordsMan)
+                        ((ShieldSwordsMan) target).defence();
+                    currentRole.attack(target);
                 } else {
-                    // 50% 機率治療
-                    currentRole.heal(gameRoles[(int) (Math.random() * gameRoles.length)]);
+                    magician.heal(gameRoles[(int) (Math.random() * gameRoles.length)]);
                 }
             }
         }

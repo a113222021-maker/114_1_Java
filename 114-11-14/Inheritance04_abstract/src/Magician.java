@@ -13,16 +13,15 @@ public class Magician extends Role{
         return healPower;
     }
 
-    // 攻擊對手(劍客/魔法師)，重寫父類別的方法
+    // 攻擊對手(劍客/魔法師)，父類別的參考指到子類別物件
     @Override
     public void attack(Role opponent) {
         opponent.setHealth(opponent.getHealth() - this.getAttackPower());
-        System.out.println(this.getName() + " 攻擊 " + opponent.getName() + " 造成 " +
+        System.out.println(this.getName() + " 魔法攻擊 " + opponent.getName() + " 造成 " +
                 this.getAttackPower() + " 點傷害。" + opponent);
     }
 
-    // 治療劍客(劍客/魔法師)，父類別沒有此方法
-    @Override
+    // 治療隊友(劍客/魔法師)，父類別的參考指到子類別物件
     public void heal(Role ally) {
         ally.setHealth(ally.getHealth() + this.healPower);
         System.out.println(this.getName() + " 治療 " + ally.getName() + " 回復 " + healPower + " 點生命值。" + ally);

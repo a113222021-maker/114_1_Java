@@ -1,4 +1,4 @@
-public abstract class Role  {
+public abstract class Role {
     // 角色名稱
     private String name;
     // 生命值
@@ -37,9 +37,8 @@ public abstract class Role  {
         return health > 0;
     }
 
-    // 父類別宣告攻擊與治療行為，讓子類別實作
     public abstract void attack(Role opponent);
-    public abstract void heal(Role ally);
+
 
     @Override
     public String toString() {
