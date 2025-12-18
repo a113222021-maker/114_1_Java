@@ -110,8 +110,8 @@ public class OnlineExamSystemMain {
             GradeReport report = new GradeReport(student, totalScore);
 
             System.out.println("===== Exam Result =====");
-            System.out.println("Student ID: " + student.getId());
-            System.out.println("Student: " + student.getName());
+            System.out.println("🏫Student ID: " + student.getId());
+            System.out.println("🎒Student: " + student.getName());
             System.out.println("Total Score: " + totalScore);
             System.out.println(report.getSummary());
             System.out.println();
