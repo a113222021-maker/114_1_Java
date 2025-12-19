@@ -232,7 +232,7 @@ public class OnlineExamSystemMain {
                 System.out.println("===== Exam Result =====");
                 System.out.println("🏫Student ID: " + s.getId());
                 System.out.println("🎒Student: " + s.getName());
-                System.out.println("??Total Score: " + totalScore);
+                System.out.println("💯Total Score: " + totalScore);
                 System.out.println("================================");
                 System.out.println(report.getSummary());
                 System.out.println();
