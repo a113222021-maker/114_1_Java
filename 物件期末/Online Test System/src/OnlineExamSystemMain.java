@@ -1,4 +1,7 @@
 import java.util.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.io.IOException;
 
 public class OnlineExamSystemMain {
 
@@ -59,6 +62,10 @@ public class OnlineExamSystemMain {
 
         Scanner scanner = new Scanner(System.in);
 
+        // CSV 匯出資料初始化
+        List<String[]> csvRows = new ArrayList<>();
+        String[] csvHeaders = new String[] { "Student ID", "Name", "Total Score" };
+
         // 先處理現有（樣本）學生，使用預設模擬答案
         for (int idx = 0; idx < students.size(); idx++) {
             Student student = students.get(idx);
@@ -112,9 +119,13 @@ public class OnlineExamSystemMain {
             System.out.println("===== Exam Result =====");
             System.out.println("🏫Student ID: " + student.getId());
             System.out.println("🎒Student: " + student.getName());
-            System.out.println("Total Score: " + totalScore);
+            System.out.println("💯Total Score: " + totalScore);
+            System.out.println("================================");
             System.out.println(report.getSummary());
             System.out.println();
+
+            // 加入 CSV 列
+            csvRows.add(new String[] { student.getId(), student.getName(), String.format("%.2f", totalScore) });
         }
 
         // 現有學生處理完畢後，再詢問使用者是否要新增互動學生並作答
@@ -219,11 +230,28 @@ public class OnlineExamSystemMain {
                 GradeReport report = new GradeReport(s, totalScore);
 
                 System.out.println("===== Exam Result =====");
-                System.out.println("Student ID: " + s.getId());
-                System.out.println("Student: " + s.getName());
-                System.out.println("Total Score: " + totalScore);
+                System.out.println("🏫Student ID: " + s.getId());
+                System.out.println("🎒Student: " + s.getName());
+                System.out.println("??Total Score: " + totalScore);
+                System.out.println("================================");
                 System.out.println(report.getSummary());
                 System.out.println();
+
+                // 加入 CSV 列
+                csvRows.add(new String[] { s.getId(), s.getName(), String.format("%.2f", totalScore) });
+            }
+        }
+
+        // 詢問是否要匯出 CSV
+        System.out.print("是否要將所有學生成績匯出為 CSV？(y/n)：");
+        String exportChoice = scanner.nextLine().trim().toLowerCase();
+        if (exportChoice.equals("y") || exportChoice.equals("yes")) {
+            Path out = Paths.get("student_results.csv");
+            try {
+                CsvExporter.export(out, csvRows, csvHeaders);
+                System.out.println("已匯出至: " + out.toAbsolutePath());
+            } catch (IOException e) {
+                System.err.println("匯出失敗: " + e.getMessage());
             }
         }
 
